@@ -20,9 +20,12 @@ then
 exit 1
 fi
 
-echo "CONTANDO Y ENVIANDO CONTEO"
+
+echo "(5) CONTANDO Y ENVIANDO CONTEO"
 FILE_COUNT=`ls meme/ | wc -l`
 echo "$FILE_COUNT" | nc $IP_SERVER $PORT
+
+echo "(6) ESCUCHANDO CONFIRMACION DE CONTEO"
 MSG=`nc -l $PORT`
 if [ "$MSG" != "OK_FILE_COUNT" ]
 then 
@@ -34,12 +37,12 @@ echo " "
 for ((i=0; i<=$FILE_COUNT-1; i++))
 do
 FILE_NAME="ElonMusk$i.jpg"
-echo "(5) ENVIANDO MENSAJE"
+echo "(9) ENVIANDO MENSAJE"
 FILE_MD5=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
 
 echo "FILE_NAME $FILE_NAME $FILE_MD5" | nc $IP_SERVER $PORT
 
-echo "(6) ESCUCHANDO"
+echo "(10) ESCUCHANDO"
 
 MSG=`nc -l $PORT`
 if [ "$MSG" != "OK_FILENAME" ]
@@ -49,13 +52,13 @@ then
 exit 2
 fi
 
-echo "(9) ENVIAMOS DATOS"
+echo "(13) ENVIAMOS DATOS"
 
 cat meme/$FILE_NAME | nc $IP_SERVER $PORT
 
 DATA_MD5=`cat meme/$FILE_NAME | md5sum | cut -d " " -f 1`
 
-echo "(10) ESCUCHAMOS RESPUESTA" 
+echo "(14) ESCUCHAMOS RESPUESTA" 
 
 MSG=`nc -l $PORT`
 
@@ -65,11 +68,11 @@ then
 	exit 3
 fi
 
-echo "(13) ENVIAMOS CONFIRMACION DE ARCHIVO"
+echo "(17) ENVIAMOS CONFIRMACION DE ARCHIVO"
 
 echo $DATA_MD5 | nc $IP_SERVER $PORT
 
-echo "(14) RECIBIMOS CONFIRMACION"
+echo "(18) RECIBIMOS CONFIRMACION"
 
 MSG=`nc -l $PORT`
 
