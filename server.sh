@@ -5,7 +5,6 @@ echo "Servidor HMTP"
 
 echo "(0) LEVANTANDO EL SERVIDOR"
 MSG=`nc -l $PORT`
-
 SALUDO=`echo $MSG | cut -d " " -f 1`
 IP_CLIENTE=`echo $MSG | cut -d " " -f 2`
 MD5_CLIENTE=`echo $MSG | cut -d " " -f 3`
@@ -26,6 +25,18 @@ fi
 
 echo "OK_HMTP" | nc $IP_CLIENTE $PORT
 
+MSG=`nc -l $PORT`
+FILE_COUNT=`echo $MSG`
+
+if [ "$MSG" != "$FILE_COUNT" ]
+then
+echo "KO_FILE_COUNT" | nc $IP_CLIENTE $PORT
+fi
+echo "OK_FILE_COUNT" | nc $IP_CLIENTE $PORT
+echo " "
+
+for ((i=0; i<=$FILE_COUNT-1; i++))
+do
 echo "(4) ESCUCHANDO"
 
 MSG=`nc -l $PORT`
@@ -40,8 +51,8 @@ then
 	exit 2
 fi
 
-MD5SUM=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
 
+MD5SUM=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
 
 if [ "$MD5SUM" != "$FILE_MD5" ]
 then
@@ -69,6 +80,16 @@ then
 	exit 4
 fi
 echo "OK_DATA_MD5" | nc $IP_CLIENTE $PORT
+echo " "
+done
+
+		COUNT=`ls inbox/ | wc -l`
+
+if [ "$COUNT" != "$FILE_COUNT" ]
+then
+echo "DATOS PERDIDOS, SE HAN RECIBIDO UN TOTAL DE $COUNT ARCHIVOS"
+exit 4
+fi
 
 echo "DATOS RECIBIDOS CORRECTAMENTE"
 

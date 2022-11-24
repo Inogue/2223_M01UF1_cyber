@@ -20,7 +20,20 @@ then
 exit 1
 fi
 
-FILE_NAME="ElonMusk.jpg"
+echo "CONTANDO Y ENVIANDO CONTEO"
+FILE_COUNT=`ls meme/ | wc -l`
+echo "$FILE_COUNT" | nc $IP_SERVER $PORT
+MSG=`nc -l $PORT`
+if [ "$MSG" != "OK_FILE_COUNT" ]
+then 
+echo "ERROR 2: NUMERO ERRONEO"
+exit 2
+fi
+
+echo " "
+for ((i=0; i<=$FILE_COUNT-1; i++))
+do
+FILE_NAME="ElonMusk$i.jpg"
 echo "(5) ENVIANDO MENSAJE"
 FILE_MD5=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
 
@@ -66,6 +79,8 @@ then
 	echo "MENSAJE DE ERROR: $MSG"
  	exit 4
 fi
+echo " "
+done
 
 echo "DATOS ENVIADOS CORRECTAMENTE"
 
