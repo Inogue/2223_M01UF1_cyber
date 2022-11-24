@@ -33,6 +33,7 @@ FILE_COUNT=`echo $MSG`
 if [ "$MSG" != "$FILE_COUNT" ]
 then
 echo "KO_FILE_COUNT" | nc $IP_CLIENTE $PORT
+exit 2
 fi
 echo "OK_FILE_COUNT" | nc $IP_CLIENTE $PORT
 echo ""
@@ -51,7 +52,7 @@ echo "(11) ENVIANDO CONFIRMACION"
 if [ "$PREFIX" != "FILE_NAME" ]
 then
 	echo "KO_FILENAME" | nc $IP_CLIENTE $PORT
-	exit 2
+	exit 3
 fi
 
 
@@ -60,7 +61,7 @@ MD5SUM=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
 if [ "$MD5SUM" != "$FILE_MD5" ]
 then
 	echo "KO_FILE_MD5" | nc $IP_CLIENTE $PORT
-	exit 3
+	exit 4
 fi
 
 echo "OK_FILENAME" | nc $IP_CLIENTE $PORT
@@ -80,7 +81,7 @@ MSG=`nc -l $PORT`
 if [ "$MSG" != "$DATA_MD5" ]
 then
 	echo "KO_DATA_MD5" | nc $IP_CLIENTE $PORT
-	exit 4
+	exit 5
 fi
 echo "OK_DATA_MD5" | nc $IP_CLIENTE $PORT
 echo " "
@@ -91,7 +92,7 @@ done
 if [ "$COUNT" != "$FILE_COUNT" ]
 then
 echo "DATOS PERDIDOS, SE HAN RECIBIDO UN TOTAL DE $COUNT ARCHIVOS"
-exit 4
+exit 6
 fi
 
 echo "DATOS RECIBIDOS CORRECTAMENTE"

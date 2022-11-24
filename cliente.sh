@@ -47,9 +47,9 @@ echo "(10) ESCUCHANDO"
 MSG=`nc -l $PORT`
 if [ "$MSG" != "OK_FILENAME" ]
 then
-	echo "ERROR 2: EL NOMBRE DEL ARCHIVO ES ERRONEO"
+	echo "ERROR 3: EL NOMBRE DEL ARCHIVO ES ERRONEO"
 	echo "Mensaje de error: $MSG"
-exit 2
+exit 3
 fi
 
 echo "(13) ENVIAMOS DATOS"
@@ -64,8 +64,8 @@ MSG=`nc -l $PORT`
 
 if [ "$MSG" != "OK_DATA_RCPT" ]
 then
-	echo "ERROR 3: DATOS INCORRECTOS"
-	exit 3
+	echo "ERROR 4: DATOS INCORRECTOS"
+	exit 4
 fi
 
 echo "(17) ENVIAMOS CONFIRMACION DE ARCHIVO"
@@ -78,9 +78,9 @@ MSG=`nc -l $PORT`
 
 if [ "$MSG" != "OK_DATA_MD5" ]
 then
-	echo "ERROR 4: DATOS FALSOS"
+	echo "ERROR 5: DATOS FALSOS"
 	echo "MENSAJE DE ERROR: $MSG"
- 	exit 4
+ 	exit 5
 fi
 echo " "
 done
