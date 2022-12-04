@@ -1,9 +1,25 @@
 #!/bin/bash
 
+if [ "$1" == "-h" ]
+then
+SCRIPT=`basename $0`
+echo "Ejemplo de uso"
+echo "$SCRIPT 127.0.0.1"
+
+exit 0
+fi
+
 IP_SERVER="localhost"
-IP_LOCAL="127.0.0.1"
+IP_LOCAL=`ip a | grep inet | grep enp0s3 | sed "s/^ *//g" | cut -d " " -f 2 | cut -d "/" -f 1`
 PORT="4242"
 MD5_IP=`echo $IP_LOCAL | md5sum | cut -d " " -f 1`
+
+
+if [ "$1" != "" ]
+then 
+IP_SERVER=$1
+echo $IP_SERVER
+fi
 
 echo "Cliente HMTP"
 
@@ -19,7 +35,6 @@ then
 	echo "ERROR 1:SALUDO MAL HECHO"
 exit 1
 fi
-
 
 echo "(5) CONTANDO Y ENVIANDO CONTEO"
 FILE_COUNT=`ls meme/ | wc -l`

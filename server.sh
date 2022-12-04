@@ -1,9 +1,15 @@
+
 #!/bin/bash
 PORT="4242"
 
 echo "Servidor HMTP" 
 
 echo "(0) LEVANTANDO EL SERVIDOR"
+
+SERVER_IP=`ip a | grep inet | grep enp0s3 | sed "s/^ *//g" | cut -d " " -f 2 |  cut -d "/" -f 1`
+
+echo "LA IP DEL SERVIDOR ES $SERVER_IP"
+
 MSG=`nc -l $PORT`
 SALUDO=`echo $MSG | cut -d " " -f 1`
 IP_CLIENTE=`echo $MSG | cut -d " " -f 2`
