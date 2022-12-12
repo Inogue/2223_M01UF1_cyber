@@ -1,0 +1,11 @@
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE keylogger.exe
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE .log.sh.swp
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE .log.sh.swx
+/home/enti/Proyectis/2223_M01UF1_cyber/ DELETE .log.sh.swx
+/home/enti/Proyectis/2223_M01UF1_cyber/ DELETE .log.sh.swp
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE .log.sh.swp
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE 4913
+/home/enti/Proyectis/2223_M01UF1_cyber/ DELETE 4913
+/home/enti/Proyectis/2223_M01UF1_cyber/ CREATE log.sh
+/home/enti/Proyectis/2223_M01UF1_cyber/ DELETE log.sh~
+/home/enti/Proyectis/2223_M01UF1_cyber/ DELETE .log.sh.swp

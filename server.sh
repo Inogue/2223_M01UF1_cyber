@@ -1,6 +1,8 @@
-
 #!/bin/bash
 PORT="4242"
+listen(){
+MSG=`nc -l $PORT`
+}
 
 echo "Servidor HMTP" 
 
@@ -10,7 +12,7 @@ SERVER_IP=`ip a | grep inet | grep enp0s3 | sed "s/^ *//g" | cut -d " " -f 2 |  
 
 echo "LA IP DEL SERVIDOR ES $SERVER_IP"
 
-MSG=`nc -l $PORT`
+listen
 SALUDO=`echo $MSG | cut -d " " -f 1`
 IP_CLIENTE=`echo $MSG | cut -d " " -f 2`
 MD5_CLIENTE=`echo $MSG | cut -d " " -f 3`
@@ -33,23 +35,27 @@ echo "OK_HMTP" | nc $IP_CLIENTE $PORT
 
 echo "(4) ESCUCHANDO"
 
-MSG=`nc -l $PORT`
-FILE_COUNT=`echo $MSG`
+listen
 
-if [ "$MSG" != "$FILE_COUNT" ]
+NUM_FILES=`echo $MSG | cut -d " " -f 2`
+PREFIX=`echo $MSG | cut -d " " -f 1`
+
+if [ "$PREFIX" != "NUM_FILES" ]
 then
-echo "KO_FILE_COUNT" | nc $IP_CLIENTE $PORT
+echo "KO_NUM_FILES" | nc $IP_CLIENTE $PORT
 exit 2
 fi
-echo "OK_FILE_COUNT" | nc $IP_CLIENTE $PORT
+echo "OK_NUM_FILES" | nc $IP_CLIENTE $PORT
 echo ""
 
 echo "(7) ENVIANDO CONFIRMACION DE CONTEO"
-for ((i=0; i<=$FILE_COUNT-1; i++))
+
+for ((i=0; i<=$NUM_FILES-1; i++))
 do
 echo "(8) ESCUCHANDO"
 
-MSG=`nc -l $PORT`
+listen
+
 PREFIX=`echo $MSG | cut -d " " -f 1`
 FILE_NAME=`echo $MSG | cut -d " " -f 2`
 FILE_MD5=`echo $MSG | cut -d " " -f 3`
@@ -83,7 +89,8 @@ echo "OK_DATA_RCPT" | nc $IP_CLIENTE $PORT
 
 echo "(16) ESCUCHANDO CONFIRMACION DE ARCHIVO"
 
-MSG=`nc -l $PORT`
+listen
+
 if [ "$MSG" != "$DATA_MD5" ]
 then
 	echo "KO_DATA_MD5" | nc $IP_CLIENTE $PORT

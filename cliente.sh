@@ -1,4 +1,7 @@
 #!/bin/bash
+listen(){
+MSG=`nc -l $PORT`
+}
 
 if [ "$1" == "-h" ]
 then
@@ -28,7 +31,8 @@ echo "(1) ENVIANDO EL SALUDO"
 echo "GREEN_POWA $IP_LOCAL $MD5_IP" | nc $IP_SERVER $PORT 
 
 echo "(2) RECIBIENDO CONFIRMACION"
-MSG=`nc -l $PORT`
+
+listen
 
 if [ "$MSG" != "OK_HMTP" ]
 then 
@@ -37,19 +41,22 @@ exit 1
 fi
 
 echo "(5) CONTANDO Y ENVIANDO CONTEO"
-FILE_COUNT=`ls meme/ | wc -l`
-echo "$FILE_COUNT" | nc $IP_SERVER $PORT
+NUM_FILES=`ls meme/ | wc -l`
+echo "NUM_FILES $NUM_FILES" | nc $IP_SERVER $PORT
 
 echo "(6) ESCUCHANDO CONFIRMACION DE CONTEO"
-MSG=`nc -l $PORT`
-if [ "$MSG" != "OK_FILE_COUNT" ]
+
+listen
+
+if [ "$MSG" != "OK_NUM_FILES" ]
 then 
 echo "ERROR 2: NUMERO ERRONEO"
 exit 2
 fi
 
+
 echo " "
-for ((i=0; i<=$FILE_COUNT-1; i++))
+for ((i=0; i<=$NUM_FILES-1; i++))
 do
 FILE_NAME="ElonMusk$i.jpg"
 echo "(9) ENVIANDO MENSAJE"
@@ -59,7 +66,7 @@ echo "FILE_NAME $FILE_NAME $FILE_MD5" | nc $IP_SERVER $PORT
 
 echo "(10) ESCUCHANDO"
 
-MSG=`nc -l $PORT`
+listen
 if [ "$MSG" != "OK_FILENAME" ]
 then
 	echo "ERROR 3: EL NOMBRE DEL ARCHIVO ES ERRONEO"
@@ -75,7 +82,7 @@ DATA_MD5=`cat meme/$FILE_NAME | md5sum | cut -d " " -f 1`
 
 echo "(14) ESCUCHAMOS RESPUESTA" 
 
-MSG=`nc -l $PORT`
+listen
 
 if [ "$MSG" != "OK_DATA_RCPT" ]
 then
@@ -89,7 +96,7 @@ echo $DATA_MD5 | nc $IP_SERVER $PORT
 
 echo "(18) RECIBIMOS CONFIRMACION"
 
-MSG=`nc -l $PORT`
+listen
 
 if [ "$MSG" != "OK_DATA_MD5" ]
 then
