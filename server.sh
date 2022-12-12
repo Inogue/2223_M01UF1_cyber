@@ -50,7 +50,7 @@ echo ""
 
 echo "(7) ENVIANDO CONFIRMACION DE CONTEO"
 
-for ((i=0; i<=$NUM_FILES-1; i++))
+for N in `seq $NUM_FILES`
 do
 echo "(8) ESCUCHANDO"
 
@@ -60,6 +60,7 @@ PREFIX=`echo $MSG | cut -d " " -f 1`
 FILE_NAME=`echo $MSG | cut -d " " -f 2`
 FILE_MD5=`echo $MSG | cut -d " " -f 3`
 
+echo $FILE_NAME
 echo "(11) ENVIANDO CONFIRMACION"
 if [ "$PREFIX" != "FILE_NAME" ]
 then
@@ -102,7 +103,7 @@ done
 
 		COUNT=`ls inbox/ | wc -l`
 
-if [ "$COUNT" != "$FILE_COUNT" ]
+if [ "$COUNT" != "$NUM_FILES" ]
 then
 echo "DATOS PERDIDOS, SE HAN RECIBIDO UN TOTAL DE $COUNT ARCHIVOS"
 exit 6

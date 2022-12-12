@@ -54,14 +54,14 @@ echo "ERROR 2: NUMERO ERRONEO"
 exit 2
 fi
 
-
+FILE_LIST=`ls meme/ `
 echo " "
-for ((i=0; i<=$NUM_FILES-1; i++))
+for FILE_NAME in $FILE_LIST
 do
-FILE_NAME="ElonMusk$i.jpg"
+
 echo "(9) ENVIANDO MENSAJE"
 FILE_MD5=`echo $FILE_NAME | md5sum | cut -d " " -f 1`
-
+echo $FILE_NAME
 echo "FILE_NAME $FILE_NAME $FILE_MD5" | nc $IP_SERVER $PORT
 
 echo "(10) ESCUCHANDO"
